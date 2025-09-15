@@ -4,6 +4,7 @@ import sys
 import logging
 import click
 from llama_stack_client import LlamaStackClient, LlamaStackClient, RAGDocument
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +44,9 @@ class ColorOutputFormatter(logging.Formatter):
 @click.command()
 @click.argument('llama_stack_url')
 @click.argument('embedding_model_name')
+@click.argument('vdb_provider')
 @click.argument('input_file')
-def cli(llama_stack_url: str, embedding_model_name: str, input_file: str):
+def cli(llama_stack_url: str, embedding_model_name: str, vdb_provider:str, input_file: str):
     """ CLI for importing mechanic content into vector store.
     
         llama_stack_url - LLama Stack URL
@@ -67,6 +69,9 @@ def cli(llama_stack_url: str, embedding_model_name: str, input_file: str):
     if embedding_model_name is None or len(embedding_model_name) == 0:
         logger.fatal("Embedding Model is a required parameter and cannot be empty.")
         sys.exit(ErrorCodes.ILLEGAL_ARGS)
+    if vdb_provider is None or len(vdb_provider) == 0:
+        logger.fatal("VectorDB Provider is required and cannot be empty.")
+        sys.exit(ErrorCodes.ILLEGAL_ARGS)
     if input_file is None or len(input_file) == 0:
         logger.fatal("Input File is a required paramter and cannot be empty.")
         sys.exit(ErrorCodes.ILLEGAL_ARGS)
@@ -86,6 +91,26 @@ def cli(llama_stack_url: str, embedding_model_name: str, input_file: str):
     )
     logger.info("Successfully connected to LLama Stack.")
 
+    # Load the input file
+    file_contents = ""
+    with open(input_file, "r") as f:
+        file_contents = f.read()
+    if len(file_contents) == 0:
+        logger.fatal("Input file is empty.  Cannot load.")
+        sys.exit(ErrorCodes.FILE_NOT_FOUND)
+    logger.info("Loaded input file.  Size of File=%s", len(file_contents))
+
+    # Split document into chunks
+    logger.info("Chunking file...")
+    headers_to_split_on = [
+        ("#", "Header 1"),
+        ("##", "Header 2"),
+        ("###", "Header 3"),
+    ]
+    markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
+    text_chunks = markdown_splitter.split_text(file_contents)
+    logger.info("File Chunked.  # of Chunks = %s", len(text_chunks))
+
     # Create a list of the registred Vector Databases
     logger.info("Searching list of Vector DBs for pre-existing repositories.")
     for vector_db in llama_stack_client.vector_dbs.list():
@@ -95,35 +120,42 @@ def cli(llama_stack_url: str, embedding_model_name: str, input_file: str):
             llama_stack_client.vector_dbs.unregister(vector_db.identifier)
 
     # Register a vector database
-    logger.info("Creating new Vector Database for content.  vector_db_name=%s", MECHANIC_VECTOR_DB_NAME)
-    llama_stack_client.vector_dbs.register(
+    logger.info("Creating new Vector Database for content.  ID/Name=%s", MECHANIC_VECTOR_DB_NAME)
+    new_vdb = llama_stack_client.vector_dbs.register(
         vector_db_id=MECHANIC_VECTOR_DB_NAME,
         embedding_model=embedding_model_name,
         embedding_dimension=384,
-        provider_id="faiss",
+        provider_id=vdb_provider,
     )
+    logger.info("Vector Database Created.  New VDB ID = %s", new_vdb.identifier)
 
+    # Create chunks into Vector Database
+    logger.info("Creating LLama Stack RAG Documents...")
+    documents = [
+        RAGDocument(
+            document_id=f"num-{i}",
+            content=f"{chunk}",
+            mime_type="text/plain",
+            metadata={},
+        )
+        for i, chunk in enumerate(text_chunks)
+    ]
 
-    #documents = [
-    #    RAGDocument(
-    #        document_id=f"num-{i}",
-    #        content=f"{chunk}",
-    #        mime_type="text/plain",
-    #        metadata={},
-    #    )
-    #    for i, chunk in enumerate(dictionary_groups)
-    #]
-    #print ("Done.  # of documents is", len(documents))
+    # Chunk the chunks so the LLama Stack API doesn't time out
+    def chunks(lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
 
     # Import content
-    #print ("Importing dictionary content into database...")
-    #llama_stack_client.tool_runtime.rag_tool.insert(
-    #    documents=documents,
-    #    vector_db_id=vector_db_id,
-    #    chunk_size_in_tokens=512,
-    #)
-    #print ("Done")
-
+    logger.info("Inserting RAG Documents into Vector Store...")
+    for chunk in chunks(documents, 10):
+        logger.info("Inserting a chunk of chunks...")
+        llama_stack_client.tool_runtime.rag_tool.insert(
+            documents=chunk,
+            vector_db_id=new_vdb.identifier,
+            chunk_size_in_tokens=2048,
+        )
 
     # Successfully imported
     logger.info("Successfully imported content.")
