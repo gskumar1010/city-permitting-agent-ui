@@ -24,7 +24,7 @@ class AppUserInterfaceElements:
 
     HEADER = "Classic&nbsp;Corvette&nbsp;Mechanic"
 
-    TAB_ICON = "./assets/tab_icon.ico"
+    TAB_ICON = "./assets/icon.png"
 
 # pylint: disable=too-few-public-methods
 class CannedGreetings:

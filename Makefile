@@ -1,5 +1,5 @@
 LLAMA_STACK_URL := https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com
-MODEL := meta-llama/Llama-3.3-70B-Instruct
+MODEL := openai/gpt-4
 EMBEDDING_MODEL := text-embedding-3-large
 VECTORDB_PROVIDER := milvus
 OPENAI_API_KEY := "nokeyneeded"
