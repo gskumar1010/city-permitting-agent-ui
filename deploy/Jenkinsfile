@@ -1,0 +1,55 @@
+pipeline 
+{
+   agent any
+   
+   options 
+   {
+      disableConcurrentBuilds()
+      buildDiscarder(logRotator(numToKeepStr: '3'))
+   }
+
+   stages
+   {
+      stage('Prepare') 
+      {
+         steps 
+         {
+            sh '''
+                    echo "PATH = ${PATH}"
+                '''
+
+            git branch: 'main', 
+                url: 'https://github.com/glroland/mechanic.git'
+         }
+      }
+
+      stage('Create Docker Image for chatbot') 
+      {
+         steps 
+         {
+            sh 'cd chatbot ; docker build . --tag chatbot:$BUILD_NUMBER'
+            sh 'cd chatbot ; docker save chatbot:$BUILD_NUMBER > chatbot-dockerimage.tar'
+            step(followSymlinks: false, artifacts: 'chatbot/chatbot-dockerimage.tar', $class: 'ArtifactArchiver')
+            sh 'cd chatbot ; docker rmi chatbot:$BUILD_NUMBER'
+         }
+      }
+
+      stage('Reload then push images to quay') 
+      {
+         steps 
+         {
+            script 
+            {
+               docker.withRegistry('https://registry.home.glroland.com/', 'quay') 
+               {
+                  sh 'docker load -i chatbot/chatbot-dockerimage.tar'
+                  sh 'docker tag chatbot:$BUILD_NUMBER registry.home.glroland.com/mechanic/chatbot:$BUILD_NUMBER'
+                  sh 'docker rmi chatbot:$BUILD_NUMBER'
+                  sh 'docker push registry.home.glroland.com/mechanic/chatbot:$BUILD_NUMBER'
+                  sh 'docker rmi registry.home.glroland.com/mechanic/chatbot:$BUILD_NUMBER'
+               }
+            }
+         }
+      }
+   }
+}
