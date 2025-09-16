@@ -4,18 +4,15 @@ metadata:
   name: mechanic
 spec:
   destination:
-    name: ''
+    name: in-cluster
     namespace: mechanic
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
   source:
-    path: 'deploy/helm'
-    repoURL: 'https://github.com/glroland/mechanic.git'
+    path: deploy/helm
+    repoURL: https://github.com/glroland/mechanic.git
     targetRevision: HEAD
     helm:
       valueFiles:
         - values.yaml
   sources: []
   project: default
-  syncPolicy:
-    automated:
-      prune: true
