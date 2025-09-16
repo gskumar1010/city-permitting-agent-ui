@@ -3,9 +3,8 @@ FROM registry.access.redhat.com/ubi9/python-311:9.6-1750969934
 # Configuration
 ENV LLAMA_STACK_URL "http://localhost:8321"
 ENV EMBEDDING_MODEL "sentence-transformers/all-mpnet-base-v2"
-ENV OPENAI_BASE_URL = "OPENAI_BASE_URL"
-ENV OPENAI_API_KEY = "OPENAI_API_KEY"
-ENV OPENAI_MODEL = "OPENAI_MODEL"
+ENV API_KEY = "nokeyneeded"
+ENV MODEL = "openai/gpt-4"
 
 # By default, listen on port 8080
 EXPOSE 8080/tcp
