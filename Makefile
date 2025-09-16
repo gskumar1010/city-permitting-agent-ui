@@ -2,6 +2,7 @@ LLAMA_STACK_URL := https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.
 MODEL := meta-llama/Llama-3.3-70B-Instruct
 EMBEDDING_MODEL := text-embedding-3-large
 VECTORDB_PROVIDER := milvus
+OPENAI_API_KEY := "nokeyneeded"
 
 OS := $(shell uname -s)
 
@@ -19,6 +20,9 @@ clean:
 ingest-data:
 	mkdir -p target/data
 	cd target/data && docling --from pdf --to json --to md --image-export-mode referenced --ocr --output . --abort-on-error ../../data/c3_repair.pdf
+
+run-chatbot:
+	cd chatbot/src && OPENAI_BASE_URL=$(LLAMA_STACK_URL)/v1/openai/v1 OPENAI_API_KEY=$(OPENAI_API_KEY) OPENAI_MODEL=$(MODEL) streamlit run app.py --server.headless true --server.address 0.0.0.0 --server.port 8080
 
 test:
 	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
