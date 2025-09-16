@@ -29,6 +29,7 @@ sidebar_bg_css = f"""
 <style>
 .st-key-chatbot {{
     background-image: url("data:image/png;base64,{bin_str}");
+    //background-image: linear-gradient(to right, rgba(255,255,255, 0.3) 0 100%), url("data:image/png;base64,{bin_str}");
     background-size: cover;
     background-attachment: local;
     //background-position: center center;
