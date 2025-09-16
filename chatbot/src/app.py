@@ -3,6 +3,7 @@
 Digital expert in fixing old corvettes
 """
 import logging
+import base64
 import streamlit as st
 from constants import SessionStateVariables
 from constants import AppUserInterfaceElements
@@ -17,6 +18,24 @@ logging.basicConfig(level=logging.INFO,
         # no need from a docker container - logging.FileHandler("mechanic-chatbot.log"),
         logging.StreamHandler()
     ])
+
+# Prepare engine bay photo
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+bin_str = get_base64_of_bin_file('assets/engine_bay.jpeg')
+sidebar_bg_css = f"""
+<style>
+.st-key-chatbot {{
+    background-image: url("data:image/png;base64,{bin_str}");
+    background-size: cover;
+    background-attachment: local;
+    //background-position: center center;
+}}
+</style>
+"""
+st.markdown(sidebar_bg_css, unsafe_allow_html=True)
 
 # Initialize Streamlit State
 if SessionStateVariables.MESSAGES not in st.session_state:
@@ -41,7 +60,7 @@ st.markdown("""
         .stAppHeader {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
-col1, col2, col3 = st.columns(3, vertical_alignment="center")
+col1, col2 = st.columns(2, vertical_alignment="center")
 st.markdown("""
     <style>
         div[data-testid="column"] {
@@ -56,12 +75,10 @@ st.markdown("""
 with col1:
     st.image("assets/side_view_car.jpeg", width=100)
 with col2:
-    st.markdown(""" # Corvette Garage """)
-with col3:
-    st.image("assets/engine_bay.jpeg", width=100)
+    st.markdown(""" # My Classic Corvette Garage """)
 
 # Initialize Chat Box
-messages = st.container(height=400)
+messages = st.container(height=400, key="chatbot")
 messages.chat_message(MessageAttributes.ASSISTANT).write(CannedGreetings.INTRO)
 for msg in st.session_state.messages:
     messages.chat_message(msg[MessageAttributes.ROLE]).write(msg[MessageAttributes.CONTENT])
