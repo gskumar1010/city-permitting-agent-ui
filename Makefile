@@ -9,8 +9,10 @@ OS := $(shell uname -s)
 install:
 	pip install -r chatbot/requirements.txt
 ifeq ($(OS),Darwin)
+	pip install -r corvetteforum-mcp/requirements.txt.mac
 	pip install -r ingest/requirements.txt.mac
 else
+	pip install -r corvetteforum-mcp/requirements.txt.linux
 	pip install -r ingest/requirements.txt.linux
 endif
 
@@ -20,9 +22,12 @@ clean:
 ingest-data:
 	mkdir -p target/data
 	cd target/data && docling --from pdf --to json --to md --image-export-mode referenced --ocr --output . --abort-on-error ../../data/c3_repair.pdf
+	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
 
 run-chatbot:
 	cd chatbot/src && LLAMA_STACK_URL=$(LLAMA_STACK_URL) API_KEY=$(API_KEY) MODEL=$(MODEL) streamlit run app.py --server.headless true --server.address 0.0.0.0 --server.port 8080
 
-test:
-	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
+run-corvetteforummcp:
+	cd corvetteforum-mcp/src && python app.py
+
+test: run-corvetteforummcp

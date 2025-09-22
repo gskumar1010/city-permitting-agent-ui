@@ -1,0 +1,7 @@
+pytest
+pylint
+mcp[cli]
+requests
+uvicorn
+docling
+mrkdwn_analysis
