@@ -17,25 +17,25 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
 2. Create an OpenShift AI Project for the application.  i.e. Mechanic
 3. Deploy an LLM to be used by the application. 
 
-example - LLama 3.2 3b Instruct (Red Hat OpenShift AI's reference documentation default)
-- Model name: llama32
-- Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
-- Deployment mode: Standard
-- Number of replicas: 1
-- Hardware profile: NVIDIA GPU
-- Customized resource limits:  CPU: Request = 1; Limit = 1; Memory: Request = 4Gi; Limit = 4Gi; nvidia.com/gpu: Request = 1; Limit = 1
-- Model route: Make deployed models available externally
-- Token authentication: Require token authentication
-- Source model location: URI
-- URI: oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct
-- Additional serving runtime arguments:
---dtype=half
---max-model-len=20000
---gpu-memory-utilization=0.95
---enable-chunked-prefill
---enable-auto-tool-choice
---tool-call-parser=llama3_json
---chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
+    example - LLama 3.2 3b Instruct (Red Hat OpenShift AI's reference documentation default)
+    - Model name: llama32
+    - Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
+    - Deployment mode: Standard
+    - Number of replicas: 1
+    - Hardware profile: NVIDIA GPU
+    - Customized resource limits:  CPU: Request = 1; Limit = 1; Memory: Request = 4Gi; Limit = 4Gi; nvidia.com/gpu: Request = 1; Limit = 1
+    - Model route: Make deployed models available externally
+    - Token authentication: Require token authentication
+    - Source model location: URI
+    - URI: oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct
+    - Additional serving runtime arguments:
+    --dtype=half
+    --max-model-len=20000
+    --gpu-memory-utilization=0.95
+    --enable-chunked-prefill
+    --enable-auto-tool-choice
+    --tool-call-parser=llama3_json
+    --chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
 
 example - LLama 3.3 70b Instruct (H200)
 - Model name: llama33
@@ -110,9 +110,9 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 
 # Representative Questions
 
-<code>What changes were made to the 1972 model year?</code>
+> What changes were made to the 1972 model year?
 
-```What do the identification numbers stamped on the engine block mean for the 72 model year?```
+> What do the identification numbers stamped on the engine block mean for the 72 model year?
 
 > What are possible causes for a slow engine crank?
 
