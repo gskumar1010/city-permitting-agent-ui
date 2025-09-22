@@ -11,13 +11,15 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
 
 # Installation (helm-prod)
 
-## LLama Stack with OpenShift AI
+## Deploy LLM for use with LLama Stack and by the Application
 
-1. The LLama Stack operator must be enabled in the DSC YAML in the OpenShift AI operator.
-2. Create an OpenShift AI Project for the application.  i.e. Mechanic
-3. Deploy an LLM to be used by the application. 
+It is assumed that everything is colocated in a single project.
 
-            example - LLama 3.2 3b Instruct (Red Hat OpenShift AI's reference documentation default)
+1. Create an OpenShift AI Project for the application.  i.e. Mechanic
+2. Deploy an LLM to be used by the application. 
+
+Example - LLama 3.2 3b Instruct (Red Hat OpenShift AI's reference documentation default)
+
             - Model name: llama32
             - Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
             - Deployment mode: Standard
@@ -37,7 +39,8 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
             --tool-call-parser=llama3_json
             --chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
 
-            example - LLama 3.3 70b Instruct (H200)
+Example - LLama 3.3 70b Instruct (H200)
+
             - Model name: llama33
             - Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
             - Deployment mode: Standard
@@ -54,7 +57,8 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
             --enable-auto-tool-choice
             --tool-call-parser=llama3_json
             
-            example - LLama 3.3 70b Instruct (H100)
+Example - LLama 3.3 70b Instruct (H100)
+
             - Model name: llama33
             - Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
             - Deployment mode: Standard
@@ -71,21 +75,24 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
             --enable-auto-tool-choice
             --tool-call-parser=llama3_json
 
-4. Connect to the cluster from the CLI using the Copy Login Command in the upper right hand side of the OpenShift Console.
-5. Change to the project that was just created above.
+## LLama Stack with OpenShift AI
+
+1. The LLama Stack operator must be enabled in the DSC YAML in the OpenShift AI operator.
+2. Connect to the cluster from the CLI using the Copy Login Command in the upper right hand side of the OpenShift Console.
+3. Change to the project that was just created above.
 
             oc project mechanic
 
-6. In this GitHub project under deploy/ocp, secret.txt contains environment variables and a command needed to create the secret needed for the LLS distroy.  Change the environment variables to match this environment and then run the create secret command.
-7. Create the LLama Stack operator instance using the YAML in the same folder as the secret.txt file.
+4. In this GitHub project under deploy/ocp, secret.txt contains environment variables and a command needed to create the secret needed for the LLS distroy.  Change the environment variables to match this environment and then run the create secret command.
+5. Create the LLama Stack operator instance using the YAML in the same folder as the secret.txt file.
 
             oc apply -f llama_stack_operator_instance.yaml
 
-8. Wait for the LLama Stack distribution to startup.
+6. Wait for the LLama Stack distribution to startup.
 
             watch -n 1 oc get pods --namespace mechanic
 
-9. [optional] If you want to test against the remote LLS distribution or plan to do the data ingestion remote, create a route for it using lls_route.yaml in same folder.
+7. [optional] If you want to test against the remote LLS distribution or plan to do the data ingestion remote, create a route for it using lls_route.yaml in same folder.
 
 ## Ingest Data
 
