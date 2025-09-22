@@ -84,6 +84,9 @@ Example - LLama 3.3 70b Instruct (H100)
             oc project mechanic
 
 4. In this GitHub project under deploy/ocp, secret.txt contains environment variables and a command needed to create the secret needed for the LLS distroy.  Change the environment variables to match this environment and then run the create secret command.
+
+            more deploy/ocp/secret.txt
+
 5. Create the LLama Stack operator instance using the YAML in the same folder as the secret.txt file.
 
             oc apply -f llama_stack_operator_instance.yaml
