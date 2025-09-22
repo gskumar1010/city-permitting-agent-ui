@@ -123,7 +123,7 @@ class AIGateway:
         vector_db_list = self.llama_stack_client.vector_dbs.list()
         for vector_db in vector_db_list:
             logger.debug("Vector DB vector_db_name = %s", vector_db.vector_db_name)
-            if vector_db.identifier == self.MECHANIC_VECTOR_DB_NAME:
+            if vector_db.vector_db_name == self.MECHANIC_VECTOR_DB_NAME or vector_db.identifier == self.MECHANIC_VECTOR_DB_NAME:
                 logger.debug("VDB Match Found!")
                 mechanic_vdb = vector_db
                 break
