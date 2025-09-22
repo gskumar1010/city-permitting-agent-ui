@@ -20,12 +20,12 @@ import logging
 from kfp import compiler, dsl
 from kfp.kubernetes import add_node_selector_json, add_toleration_json
 
-PYTHON_BASE_IMAGE = "registry.redhat.io/ubi9/python-312@sha256:e80ff3673c95b91f0dafdbe97afb261eab8244d7fd8b47e20ffcbcfee27fb168"
+PYTHON_BASE_IMAGE = "registry.redhat.io/ubi9/python-312:9.6"
 
 # Workbench Runtime Image: Pytorch with CUDA and Python 3.11 (UBI 9)
 # The images for each release can be found in
 # https://github.com/red-hat-data-services/rhoai-disconnected-install-helper/blob/main/rhoai-2.21.md
-PYTORCH_CUDA_IMAGE = "quay.io/modh/odh-pipeline-runtime-pytorch-cuda-py311-ubi9@sha256:4706be608af3f33c88700ef6ef6a99e716fc95fc7d2e879502e81c0022fd840e"
+PYTORCH_CUDA_IMAGE = "quay.io/modh/odh-pipeline-runtime-pytorch-cuda-py311-ubi9:rhoai-2.23"
 
 _log = logging.getLogger(__name__)
 
@@ -129,6 +129,8 @@ def create_pdf_splits(
         "pymilvus",
         "fire",
         "rapidocr-onnxruntime",
+        "rapidocr",
+        "onnxruntime"
     ],
 )
 def docling_convert(
@@ -263,14 +265,14 @@ def docling_convert(
 
 @dsl.pipeline()
 def docling_convert_pipeline(
-    base_url: str = "https://raw.githubusercontent.com/docling-project/docling/main/tests/data/pdf",
-    pdf_filenames: str = "2203.01017v2.pdf, 2206.01062.pdf, 2305.03393v1-pg9.pdf, amt_handbook_sample.pdf, code_and_formula.pdf, multi_page.pdf, picture_classification.pdf, redp5110_sampled.pdf, right_to_left_01.pdf, right_to_left_02.pdf, right_to_left_03.pdf",
+    base_url: str = "https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/data",
+    pdf_filenames: str = "c3_repair.pdf",
     num_workers: int = 1,
-    vector_db_id: str = "my_demo_vector_id",
-    service_url: str = "http://lsd-llama-milvus-service:8321",
-    embed_model_id: str = "ibm-granite/granite-embedding-125m-english",
-    max_tokens: int = 512,
-    use_gpu: bool = True,
+    vector_db_id: str = "mechanic_vector_db_v2",
+    service_url: str = "https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com",
+    embed_model_id: str = "text-embedding-3-large",
+    max_tokens: int = 2500,
+    use_gpu: bool = False,
     # tolerations: Optional[list] = [{"effect": "NoSchedule", "key": "nvidia.com/gpu", "operator": "Exists"}],
     # node_selector: Optional[dict] = {},
 ):
