@@ -17,9 +17,59 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
 2.) Create an OpenShift AI Project for the application.  i.e. Mechanic
 3.) Deploy an LLM to be used by the application. 
 
-example - llama32
+example - LLama 3.2 3b Instruct (Red Hat OpenShift AI's reference documentation default)
+- Model name: llama32
+- Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
+- Deployment mode: Standard
+- Number of replicas: 1
+- Hardware profile: NVIDIA GPU
+- Customized resource limits:  CPU: Request = 1; Limit = 1; Memory: Request = 4Gi; Limit = 4Gi; nvidia.com/gpu: Request = 1; Limit = 1
+- Model route: Make deployed models available externally
+- Token authentication: Require token authentication
+- Source model location: URI
+- URI: oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct
+- Additional serving runtime arguments:
+--dtype=half
+--max-model-len=20000
+--gpu-memory-utilization=0.95
+--enable-chunked-prefill
+--enable-auto-tool-choice
+--tool-call-parser=llama3_json
+--chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
 
-example - llama33
+example - LLama 3.3 70b Instruct (H200)
+- Model name: llama33
+- Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
+- Deployment mode: Standard
+- Number of replicas: 1
+- Hardware profile: NVIDIA GPU
+- Customized resource limits:  CPU: Request = 2; Limit = 4; Memory: Request = 4Gi; Limit = 8Gi; nvidia.com/gpu: Request = 1; Limit = 1
+- Model route: Make deployed models available externally
+- Token authentication: Require token authentication
+- Source model location: URI
+- URI: oci://registry.redhat.io/rhelai1/modelcar-llama-3-3-70b-instruct-fp8-dynamic:1.5
+- Additional serving runtime arguments:
+--max-model-len=16384
+--enable-chunked-prefill
+--enable-auto-tool-choice
+--tool-call-parser=llama3_json
+
+example - LLama 3.3 70b Instruct (H100)
+- Model name: llama33
+- Serving runtime: vLLM NVIDIA GPU ServingRuntime for KServe
+- Deployment mode: Standard
+- Number of replicas: 1
+- Hardware profile: NVIDIA GPU
+- Customized resource limits:  CPU: Request = 2; Limit = 4; Memory: Request = 4Gi; Limit = 8Gi; nvidia.com/gpu: Request = 1; Limit = 1
+- Model route: Make deployed models available externally
+- Token authentication: Require token authentication
+- Source model location: URI
+- URI: oci://registry.redhat.io/rhelai1/modelcar-llama-3-3-70b-instruct-quantized-w4a16:1.5
+- Additional serving runtime arguments:
+--max-model-len=16384
+--enable-chunked-prefill
+--enable-auto-tool-choice
+--tool-call-parser=llama3_json
 
 4.) Connect to the cluster from the CLI using the Copy Login Command in the upper right hand side of the OpenShift Console.
 5.) Change to the project that was just created above.   oc project mechanic
