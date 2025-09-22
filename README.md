@@ -102,7 +102,7 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 2. Open the application in your web browser
 3. Paste the following into the message bar at the bottom of the screen.
 
-> What changes were made to the 1972 model year?
+            What changes were made to the 1972 model year?
 
 4. The system is working as expected if the answer to the first question is something like this:
 
