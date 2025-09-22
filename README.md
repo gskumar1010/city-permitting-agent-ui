@@ -110,9 +110,9 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 
 # Representative Questions
 
-> What changes were made to the 1972 model year?
+<code>What changes were made to the 1972 model year?</code>
 
-> What do the identification numbers stamped on the engine block mean for the 72 model year?
+```What do the identification numbers stamped on the engine block mean for the 72 model year?```
 
 > What are possible causes for a slow engine crank?
 
