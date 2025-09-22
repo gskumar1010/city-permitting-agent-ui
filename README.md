@@ -89,7 +89,10 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 
 ## Deploy Chatbot
 
-1. Checkout this project to your local filesystem.  `git clone https://github.com/glroland/mechanic.git`
+1. Checkout this project to your local filesystem.
+
+            git clone https://github.com/glroland/mechanic.git`
+
 2. From a command line, change to mechanic folder, then to the deploy/helm-prod sub folder.
 3. Assumed that helm is installed and you are still connected to the OpenShift cluster referred to above.
 4. Change to the mechanic namespace
@@ -106,14 +109,18 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 
 4. The system is working as expected if the answer to the first question is something like this:
 
-> Based on the provided knowledge, the 1972 Corvette model year saw very few changes. The main change was the introduction of a new rating system that uses net horsepower instead of gross power outputs, which resulted in a decrease in rated horsepower. Additionally, the audio alarm antitheft system was not a standard item, and the fiber optic light monitors were discontinued. The body style remained the same, with only three engine options available: two 350 cubic inch engines and one 454 cubic inch engine.
+            Based on the provided knowledge, the 1972 Corvette model year saw very few changes. The main change was the introduction of a new rating system that uses net horsepower instead of gross power outputs, which resulted in a decrease in rated horsepower. Additionally, the audio alarm antitheft system was not a standard item, and the fiber optic light monitors were discontinued. The body style remained the same, with only three engine options available: two 350 cubic inch engines and one 454 cubic inch engine.
 
 # Representative Questions
 
-> What changes were made to the 1972 model year?
+- Example 1
 
-> What do the identification numbers stamped on the engine block mean for the 72 model year?
+            What do the identification numbers stamped on the engine block mean for the 72 model year?
 
-> What are possible causes for a slow engine crank?
+- Example 2
+  
+            What are possible causes for a slow engine crank?
 
-> What are the steps to drain and refill the cooling system?
+- Example 3
+
+            What are the steps to drain and refill the cooling system?
