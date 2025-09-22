@@ -6,6 +6,6 @@ metadata:
     {{- include "mechanic.labels" . | nindent 4 }}
 immutable: false
 data:
-  LLAMA_STACK_URL: "http://lls-mechanic.apps.cluster-abcd.abcd.sandbox5245.opentlc.com"
+  LLAMA_STACK_URL: "http://lsd-llama-milvus-service.mechanic.svc.cluster.local:8321"
   API_KEY: "nokeyneeded"
   MODEL: "llama32"
