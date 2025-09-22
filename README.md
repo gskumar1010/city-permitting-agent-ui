@@ -97,6 +97,8 @@ Example - LLama 3.3 70b Instruct (H100)
 
 7. [optional] If you want to test against the remote LLS distribution or plan to do the data ingestion remote, create a route for it using lls_route.yaml in same folder.
 
+            oc apply -f lls_route.yaml
+
 ## Ingest Data
 
 Milvus must be hydrated with content before the chatbot will be functional.  This is currently orchestrated through make with the Makefile in the root directory.
@@ -106,6 +108,8 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
 3. Change EMBEDDING_MODEL to the embedding model you wish to use for vectorized content through the LLama Stack runtime.
 4. Run make ingest-data.  This will take several minutes.
 
+            make ingest-data
+
 ## Deploy Chatbot
 
 1. Checkout this project to your local filesystem.
@@ -113,8 +117,14 @@ Milvus must be hydrated with content before the chatbot will be functional.  Thi
             git clone https://github.com/glroland/mechanic.git
 
 2. From a command line, change to mechanic folder, then to the deploy/helm-prod sub folder.
+
+            cd mechanic/deploy/helm-prod
+
 3. Assumed that helm is installed and you are still connected to the OpenShift cluster referred to above.
 4. Change to the mechanic namespace
+
+            oc project mechanic
+
 5. Install the application through helm.
 
             helm install m1 .
