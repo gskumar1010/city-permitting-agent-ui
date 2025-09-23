@@ -270,7 +270,7 @@ def docling_convert_pipeline(
     num_workers: int = 1,
     vector_db_id: str = "mechanic_vector_db_v2",
     service_url: str = "https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com",
-    embed_model_id: str = "text-embedding-3-large",
+    embed_model_id: str = "ibm-granite/granite-embedding-125m-english",
     max_tokens: int = 2500,
     use_gpu: bool = False,
     # tolerations: Optional[list] = [{"effect": "NoSchedule", "key": "nvidia.com/gpu", "operator": "Exists"}],

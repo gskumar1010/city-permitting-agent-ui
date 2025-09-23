@@ -2,3 +2,5 @@ docling[mac_intel]
 click
 llama_stack_client
 langchain_text_splitters
+kfp
+kfp[kubernetes]
