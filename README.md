@@ -99,16 +99,34 @@ Example - LLama 3.3 70b Instruct (H100)
 
             oc apply -f lls_route.yaml
 
-## Ingest Data
+## Ingest Data (via Makefile)
 
 Milvus must be hydrated with content before the chatbot will be functional.  This is currently orchestrated through make with the Makefile in the root directory.
 
 1. Change LLAMA_STACK_URL to map to the LLama Stack route provided above.  If done from the context of a workbench, the internal service URL can be used instead of making the environment available externally.
 2. Change MODEL to the name of the model that you wish to leverage through the LLama Stack runtime.
 3. Change EMBEDDING_MODEL to the embedding model you wish to use for vectorized content through the LLama Stack runtime.
-4. Run make ingest-data.  This will take several minutes.
+4. Provided you already have a compatible python environment setup (tested with Python 3.12), install the dependences.
+
+            make install
+
+5. Run make ingest-data.  This will take several minutes.
 
             make ingest-data
+
+## Ingest Data (via Data Science Pipeline)
+
+Depending on the version of LLama Stack in use, the vector database will need to be created through the stack as a separate step.  This check has not been codified in the pipeline yet, so for it to work consistently across LLS versions, it is currently expected that this is run after the Makefile version of the data ingestion.
+
+1. In OpenShift AI, navigate to your project and choose Pipelines.
+2. Create a pipeline server if one does not exist.  You will need object storage.
+3. Import the previously compiled pipeline:
+ - Provide pipeline name and version details
+ - Upload via URL:
+
+            https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/ingest/src/pipeline_compiled.yaml
+
+4. Create run.
 
 ## Deploy Chatbot
 

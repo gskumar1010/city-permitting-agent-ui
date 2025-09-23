@@ -265,10 +265,10 @@ def docling_convert(
 
 @dsl.pipeline()
 def docling_convert_pipeline(
-    base_url: str = "https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/data",
+    base_url: str = "https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/chatbot/src/assets",
     pdf_filenames: str = "c3_repair.pdf",
     num_workers: int = 1,
-    vector_db_id: str = "mechanic_vector_db_v2",
+    vector_db_id: str = "mechanic_vector_db",
     service_url: str = "https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com",
     embed_model_id: str = "ibm-granite/granite-embedding-125m-english",
     max_tokens: int = 2500,

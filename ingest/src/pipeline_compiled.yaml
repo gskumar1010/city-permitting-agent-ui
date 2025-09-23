@@ -2,14 +2,14 @@
 # Name: docling-convert-pipeline
 # Description: Converts PDF documents in a git repository to Markdown using Docling and generates embeddings
 # Inputs:
-#    base_url: str [Default: 'https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/data']
+#    base_url: str [Default: 'https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/chatbot/src/assets']
 #    embed_model_id: str [Default: 'ibm-granite/granite-embedding-125m-english']
 #    max_tokens: int [Default: 2500.0]
 #    num_workers: int [Default: 1.0]
 #    pdf_filenames: str [Default: 'c3_repair.pdf']
 #    service_url: str [Default: 'https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com']
 #    use_gpu: bool [Default: False]
-#    vector_db_id: str [Default: 'mechanic_vector_db_v2']
+#    vector_db_id: str [Default: 'mechanic_vector_db']
 components:
   comp-condition-3:
     dag:
@@ -723,7 +723,7 @@ root:
   inputDefinitions:
     parameters:
       base_url:
-        defaultValue: https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/data
+        defaultValue: https://raw.githubusercontent.com/glroland/mechanic/refs/heads/main/chatbot/src/assets
         description: Base URL to fetch PDF files from
         isOptional: true
         parameterType: STRING
@@ -758,7 +758,7 @@ root:
         isOptional: true
         parameterType: BOOLEAN
       vector_db_id:
-        defaultValue: mechanic_vector_db_v2
+        defaultValue: mechanic_vector_db
         description: ID of the vector database to store embeddings
         isOptional: true
         parameterType: STRING

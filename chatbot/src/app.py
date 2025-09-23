@@ -66,12 +66,19 @@ css = f"""
 """
 st.markdown(css, unsafe_allow_html=True)
 
+@st.dialog("Service Manual", width="large")
+def display_service_manual():
+    st.pdf("assets/c3_repair.pdf")
+
 # Setup header
-col1, col2 = st.columns(2, vertical_alignment="center")
+col1, col2, col3 = st.columns([0.1, 0.2, 0.7], vertical_alignment="center")
 with col1:
     st.image("assets/side_view_car.jpeg", width=100)
 with col2:
-    st.markdown(""" # My Classic Corvette Garage """)
+    if st.button("Service Manual"):
+        display_service_manual()
+with col3:
+    st.markdown(""" # My&nbsp;Classic&nbsp;Corvette&nbsp;Garage """)
 
 # Initialize Chat Box
 messages = st.container(height=400, key="chatbot")

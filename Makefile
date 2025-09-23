@@ -1,6 +1,8 @@
 LLAMA_STACK_URL := https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com
 MODEL := openai/gpt-4
-EMBEDDING_MODEL := text-embedding-3-large
+#MODEL := llama32
+#EMBEDDING_MODEL := text-embedding-3-large
+EMBEDDING_MODEL := granite-embedding-125m
 VECTORDB_PROVIDER := milvus
 API_KEY := "nokeyneeded"
 
@@ -21,7 +23,7 @@ clean:
 
 ingest-data:
 	mkdir -p target/data
-	cd target/data && docling --from pdf --to json --to md --image-export-mode referenced --ocr --output . --abort-on-error ../../data/c3_repair.pdf
+	cd target/data && docling --from pdf --to json --to md --image-export-mode referenced --ocr --output . --abort-on-error ../../chatbot/src/assets/c3_repair.pdf
 	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
 
 run-chatbot:
@@ -30,4 +32,5 @@ run-chatbot:
 run-corvetteforummcp:
 	cd corvetteforum-mcp/src && python app.py
 
-test: run-corvetteforummcp
+test:
+	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
