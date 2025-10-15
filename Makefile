@@ -1,4 +1,4 @@
-LLAMA_STACK_URL := https://my-llama-stack-my-llama-stack.apps.ocp.home.glroland.com
+LLAMA_STACK_URL := https://llamastack-server-llama-serve.apps.cluster-j529f.j529f.sandbox2729.opentlc.com
 MODEL := openai/gpt-4
 #MODEL := llama32
 #EMBEDDING_MODEL := text-embedding-3-large
@@ -27,7 +27,7 @@ ingest-data:
 	cd ingest/src && python import.py $(LLAMA_STACK_URL) $(EMBEDDING_MODEL) $(VECTORDB_PROVIDER) ../../target/data/c3_repair.md
 
 run-chatbot:
-	cd chatbot/src && LLAMA_STACK_URL=$(LLAMA_STACK_URL) API_KEY=$(API_KEY) MODEL=$(MODEL) streamlit run app.py --server.headless true --server.address 0.0.0.0 --server.port 8080
+	cd chatbot/src && LLAMA_STACK_URL=$(LLAMA_STACK_URL) API_KEY=$(API_KEY) MODEL=$(MODEL) streamlit run city-permitting-streamlit.py --server.headless true --server.address 0.0.0.0 --server.port 8080
 
 run-corvetteforummcp:
 	cd corvetteforum-mcp/src && python app.py

@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi9/python-311:9.6-1750969934
 
 # Configuration
-ENV LLAMA_STACK_URL "http://localhost:8321"
+ENV LLAMA_STACK_URL "http://llamastack-server:8321"
 ENV EMBEDDING_MODEL "sentence-transformers/all-mpnet-base-v2"
 ENV API_KEY = "nokeyneeded"
 ENV MODEL = "openai/gpt-4"
@@ -22,4 +22,4 @@ RUN pip install -r requirements.txt
 COPY ./src/ .
 
 # Specify the command to run on container start
-CMD ["streamlit", "run", "./app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "./city-permitting-streamlit.py", "--server.port=8080", "--server.address=0.0.0.0"]

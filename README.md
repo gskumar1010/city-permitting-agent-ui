@@ -1,4 +1,6 @@
-# Mechanic Chatbot for Classic Corvettes Demo
+# City Permitting Agent UI
+
+###### Based on glroland's Mechanic Chatbot for Classic Corvettes Demo
 
 # Architectural Components
 - Chatbot
@@ -8,6 +10,22 @@
 helm-dev configuration uses a community LLama Stack environment called my-llama-stack, which is wired to OpenAI GPT-4 and an externally hosted Milvus server on db.
 
 helm-prod configuration uses the LLama Stack distribution provided by OpenShift AI, which also provides an embedded Milvus server.  All transactional data is stored on a single PVC for this demo.
+
+# Running Locally
+
+Since Python hates itself, get in a Pythong virtual environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Then
+
+```bash
+make install
+make run-chatbot
+```
 
 # Installation (helm-prod)
 
@@ -128,7 +146,7 @@ Depending on the version of LLama Stack in use, the vector database will need to
 
 4. Create run.
 
-## Deploy Chatbot
+<!-- ## Deploy Chatbot
 
 1. Checkout this project to your local filesystem.
 
@@ -149,9 +167,9 @@ Depending on the version of LLama Stack in use, the vector database will need to
 
 6. Wait for the application to startup.
 
-            watch -n 1 oc get pods --namespace mechanic
+            watch -n 1 oc get pods --namespace mechanic -->
 
-## Health Check / Test Steps
+<!-- ## Health Check / Test Steps
 
 1. Get the Chatbot URL
 
@@ -178,4 +196,4 @@ Depending on the version of LLama Stack in use, the vector database will need to
 
 - Example 3
 
-            What are the steps to drain and refill the cooling system?
+            What are the steps to drain and refill the cooling system? -->
