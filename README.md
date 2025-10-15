@@ -13,7 +13,7 @@ helm-prod configuration uses the LLama Stack distribution provided by OpenShift 
 
 # Running Locally
 
-Since Python hates itself, get in a Pythong virtual environment
+Since Python hates itself, get in a Python virtual environment
 
 ```bash
 python3 -m venv venv
